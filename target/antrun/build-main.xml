@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<project name="maven-antrun-" default="main"  >
-<target name="main">
-  <echo file="/Users/shiwang/GaianRangerPlugin/ranger/plugin-gaian/target/version" message="1.0.0-SNAPSHOT"/>
-</target>
-</project>

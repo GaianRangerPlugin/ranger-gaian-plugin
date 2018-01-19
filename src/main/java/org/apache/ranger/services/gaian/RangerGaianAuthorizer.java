@@ -134,15 +134,14 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
     }
 
     public GaianResourceType getGaianResourceType(String resourceType) {
-        switch (resourceType) {
-            case "SCHEMA":
-                return GaianResourceType.SCHEMA;
-            case "TABLE":
-                return GaianResourceType.TABLE;
-            case "COLUMN":
-                return GaianResourceType.COLUMN;
-            default:
-                return GaianResourceType.NONE;
+        if (resourceType.equals("SCHEMA")) {
+            return GaianResourceType.SCHEMA;
+        } else if (resourceType.equals("TABLE")) {
+            return GaianResourceType.TABLE;
+        } else if (resourceType.equals("COLUMN")) {
+            return GaianResourceType.COLUMN;
+        } else {
+            return GaianResourceType.NONE;
         }
     }
 
