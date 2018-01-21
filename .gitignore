@@ -1,0 +1,11 @@
+*.iml
+.pydevproject
+.settings/
+.metadata
+.classpath
+.project
+winpkg/target
+.DS_Store
+.idea
+*.class
+/target/

@@ -83,6 +83,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			users.add("users");
 			queryContext.setUserGroups(users);
 			queryContext.setResourceType("COLUMN");
+			authorizer.init();
 			authorizeResult = authorizer.isAuthorized(queryContext);
 
 			//build queryContext

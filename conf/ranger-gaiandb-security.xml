@@ -35,7 +35,7 @@
 
 	<property>
 		<name>ranger.plugin.gaiandb.policy.rest.url</name>
-		<value>http://policymanagerhost:port</value>
+		<value>http://narc1.fyre.ibm.com:6080</value>
 		<description>
 			URL to Ranger Admin
 		</description>

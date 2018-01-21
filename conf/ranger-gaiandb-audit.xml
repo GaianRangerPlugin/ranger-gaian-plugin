@@ -52,7 +52,7 @@
 	<!--  Properties whose name begin with "xasecure.audit.jpa." are used to configure JPA -->
 	<property>
 		<name>xasecure.audit.jpa.javax.persistence.jdbc.url</name>
-		<value>jdbc:mysql://localhost:3306/ranger_audit</value>
+		<value>jdbc:mysql://narc1.fyre.ibm.com:3306/ranger_audit</value>
 	</property>
 
 	<property>
