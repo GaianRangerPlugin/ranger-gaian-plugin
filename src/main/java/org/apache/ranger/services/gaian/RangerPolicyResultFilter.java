@@ -24,8 +24,10 @@ import java.sql.ResultSetMetaData;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.HashSet;
+import java.sql.SQLException;
 
 import org.apache.derby.iapi.types.DataValueDescriptor;
 
@@ -74,11 +76,14 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			queryContext.setTableName(logicalTableName);
 			queryContext.setActionType("SELECT");
 			queryContext.setSchema("Gaian");
-			//String columnNames = logicalTableResultSetMetaData.getColumnNames();
-			String columnNames = "name,city";
-			List<String> columns = Arrays.asList(columnNames.split(","));
+			List<String> columns = new ArrayList<String>();
+			int count = logicalTableResultSetMetaData.getColumnCount();
+			for (int i = 1; i <= count; i++) {
+				String str = logicalTableResultSetMetaData.getColumnName(i);
+				columns.add(str);
+			}
 			queryContext.setColumns(columns);
-			queryContext.setUser("gaian");
+			queryContext.setUser("admin");
 			Set<String> users = new HashSet<String>();
 			users.add("users");
 			queryContext.setUserGroups(users);
@@ -88,6 +93,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
 			//build queryContext
 		} catch (GaianAuthorizationException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 

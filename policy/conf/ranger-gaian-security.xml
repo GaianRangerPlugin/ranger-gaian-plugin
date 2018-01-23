@@ -18,15 +18,15 @@
 <?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
 <configuration xmlns:xi="http://www.w3.org/2001/XInclude">
 	<property>
-		<name>ranger.plugin.gaiandb.service.name</name>
-		<value>gaiandbdev</value>
+		<name>ranger.plugin.gaian.service.name</name>
+		<value>gaian</value>
 		<description>
-			Name of the Ranger service containing gaiandb policies
+			Name of the Ranger service containing gaian policies
 		</description>
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.source.impl</name>
+		<name>ranger.plugin.gaian.policy.source.impl</name>
 		<value>org.apache.ranger.admin.client.RangerAdminRESTClient</value>
 		<description>
 			Class to retrieve policies from the source
@@ -34,7 +34,7 @@
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.rest.url</name>
+		<name>ranger.plugin.gaian.policy.rest.url</name>
 		<value>http://narc1.fyre.ibm.com:6080</value>
 		<description>
 			URL to Ranger Admin
@@ -42,15 +42,15 @@
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.rest.ssl.config.file</name>
-		<value>/etc/gaiandb/conf/ranger-policymgr-ssl.xml</value>
+		<name>ranger.plugin.gaian.policy.rest.ssl.config.file</name>
+		<value>/etc/gaian/conf/ranger-policymgr-ssl.xml</value>
 		<description>
 			Path to the file containing SSL details to contact Ranger Admin
 		</description>
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.pollIntervalMs</name>
+		<name>ranger.plugin.gaian.policy.pollIntervalMs</name>
 		<value>30000</value>
 		<description>
 			How often to poll for changes in policies?
@@ -58,23 +58,23 @@
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.cache.dir</name>
-		<value>/etc/ranger/gaiandbdev/policycache</value>
+		<name>ranger.plugin.gaian.policy.cache.dir</name>
+		<value>/etc/ranger/gaiandev/policycache</value>
 		<description>
 			Directory where Ranger policies are cached after successful retrieval from the source
 		</description>
 	</property>
 
 	<property>
-		<name>xasecure.gaiandb.update.xapolicies.on.grant.revoke</name>
+		<name>xasecure.gaian.update.xapolicies.on.grant.revoke</name>
 		<value>true</value>
 		<description>
-			Should gaiandb plugin update Ranger policies for updates to permissions done using GRANT/REVOKE?
+			Should gaian plugin update Ranger policies for updates to permissions done using GRANT/REVOKE?
 		</description>
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.rest.client.connection.timeoutMs</name>
+		<name>ranger.plugin.gaian.policy.rest.client.connection.timeoutMs</name>
 		<value>120000</value>
 		<description>
 			RangerRestClient Connection Timeout in Milli Seconds
@@ -82,7 +82,7 @@
 	</property>
 
 	<property>
-		<name>ranger.plugin.gaiandb.policy.rest.client.read.timeoutMs</name>
+		<name>ranger.plugin.gaian.policy.rest.client.read.timeoutMs</name>
 		<value>30000</value>
 		<description>
 			RangerRestClient read Timeout in Milli Seconds
