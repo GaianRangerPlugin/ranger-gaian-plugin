@@ -43,7 +43,7 @@
 
 	<property>
 		<name>ranger.plugin.gaian.policy.rest.ssl.config.file</name>
-		<value>/etc/gaian/conf/ranger-policymgr-ssl.xml</value>
+		<value>ranger-policymgr-ssl.xml</value>
 		<description>
 			Path to the file containing SSL details to contact Ranger Admin
 		</description>
@@ -59,17 +59,9 @@
 
 	<property>
 		<name>ranger.plugin.gaian.policy.cache.dir</name>
-		<value>/etc/ranger/gaiandev/policycache</value>
+		<value>/root/gaiandb/gaiandb/policycache</value>
 		<description>
 			Directory where Ranger policies are cached after successful retrieval from the source
-		</description>
-	</property>
-
-	<property>
-		<name>xasecure.gaian.update.xapolicies.on.grant.revoke</name>
-		<value>true</value>
-		<description>
-			Should gaian plugin update Ranger policies for updates to permissions done using GRANT/REVOKE?
 		</description>
 	</property>
 
