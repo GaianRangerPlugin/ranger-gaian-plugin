@@ -24,3 +24,14 @@ On Gaian Node:
   SQL_RESULT_FILTER=org.apache.ranger.services.gaian.RangerPolicyResultFilter
 
 3. start Gaian Server
+
+Deploying the Service Definition to Ranger
+
+This needs to be done once only (unless the service definition changes)
+
+cd resources/service-defs
+curl -u admin:admin -X POST -H "Accept: application/json" -H "Content-Type: application/json" --data @ranger-servicedef-gaian.json http://localhost:6080/service/plugins/definitions
+
+Replace localhost with the IP /port of your Ranger Server
+
+Once posted, the ranger access manager page should now show 'Gaian' as a selectable component
