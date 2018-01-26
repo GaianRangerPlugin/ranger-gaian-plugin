@@ -93,6 +93,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
 
                 if (result == null || !result.getIsAllowed()) {
                     isAuthorized = false;
+                    break;
                 }
             }
         } else if (resourceType == GaianResourceType.TABLE) {

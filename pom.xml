@@ -32,7 +32,7 @@
             <artifactId>com.ibm.gaiandb</artifactId>
             <version>2.1.8_20160523</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/resources/GAIANDB.jar</systemPath>
+            <systemPath>${project.basedir}/policy/GAIANDB.jar</systemPath>
         </dependency>
         <dependency>
             <!-- The derby jar is taken from the latest distribution      -->
@@ -42,7 +42,7 @@
             <artifactId>com.apache.derby</artifactId>
             <version>1.0</version>
             <scope>system</scope>
-            <systemPath>${project.basedir}/resources/derby.jar</systemPath>
+            <systemPath>${project.basedir}/policy/derby.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>commons-logging</groupId>

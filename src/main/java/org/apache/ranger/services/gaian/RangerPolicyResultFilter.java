@@ -58,8 +58,9 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 	// Initialize gaianDB logging
 	private static final Logger logger = new Logger( "RangerPolicyResultFilter", 25 );
 
-	QueryContext queryContext = new QueryContext();
-	GaianAuthorizer authorizer = new RangerGaianAuthorizer();
+	private QueryContext queryContext = new QueryContext();
+	private GaianAuthorizer authorizer = new RangerGaianAuthorizer();
+	private boolean authorizeResult = true;
 	
 	/**
 	 * Policy instantiation constructor - invoked for every new query.
@@ -71,7 +72,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 	
 	public boolean setLogicalTable(String logicalTableName, ResultSetMetaData logicalTableResultSetMetaData) {
 		logger.logDetail("Entered setLogicalTable(), logicalTable: " + logicalTableName + ", structure: " + logicalTableResultSetMetaData);
-		boolean authorizeResult = true;
+
 		try {
 			queryContext.setTableName(logicalTableName);
 			queryContext.setActionType("SELECT");
@@ -83,17 +84,14 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 				columns.add(str);
 			}
 			queryContext.setColumns(columns);
+			queryContext.setResourceType("COLUMN");
 			queryContext.setUser("admin");
 			Set<String> users = new HashSet<String>();
 			users.add("users");
 			queryContext.setUserGroups(users);
-			queryContext.setResourceType("COLUMN");
-			authorizer.init();
-			authorizeResult = authorizer.isAuthorized(queryContext);
+
 
 			//build queryContext
-		} catch (GaianAuthorizationException e) {
-			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -120,7 +118,22 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
 	public boolean setQueriedColumns(int[] queriedColumns) {
 		logger.logDetail("Entered setQueriedColumns(), queriedColumns: " + Util.intArrayAsString(queriedColumns));
-		return true; // allow query to continue (i.e. accept that all these columns be queried)
+
+		try {
+			// update to the queried columns
+			List<String> columns = new ArrayList<String>();
+			for (int i = 0; i < queriedColumns.length; i++) {
+				columns.add(queryContext.getColumns().get(queriedColumns[i] - 1));
+			}
+			queryContext.setColumns(columns);
+			queryContext.setResourceType("COLUMN");
+			authorizer.init();
+			authorizeResult = authorizer.isAuthorized(queryContext);
+		} catch (GaianAuthorizationException e) {
+			e.printStackTrace();
+		}
+
+		return authorizeResult; // allow query to continue (i.e. accept that all these columns be queried)
 	}
 	
 	/**
@@ -131,18 +144,11 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
 		logger.logDetail("Entered filterRowsBatch(), dataSourceID: " + dataSourceID + ", number of rows: " + rows.length );
 
-		// quick hack to randomly drop ros
-		// Quick test to randomly fail queries
-		Random randomGenerator = new Random();
-		int randomInt = randomGenerator.nextInt(100);
-		logger.logDetail("Random: " + randomInt);
-
-		if (randomInt>80)
+		if (!authorizeResult)
 		{
-			logger.logDetail("filterRowsBatch: SIMULATED FAILURE" );
+			logger.logDetail("filterRowsBatch: UnAuthorized query!" );
 
-			//emptyRows = new DataValueDescriptor()
-			return null;
+			return new DataValueDescriptor[rows.length][rows[0].length];
 		}
 
 		else
