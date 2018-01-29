@@ -5,7 +5,10 @@
   "implClass": "org.apache.ranger.services.gaiandb.RangerServiceGaian",
   "label": "Gaian",
   "description": "Gaian",
-  "guid": "86d10748-e4fc-442b-8991-f6a727054ece",
+  "options": {
+    "enableDenyAndExceptionsInPolicies": "true"
+  },
+    "guid": "86d10748-e4fc-442b-8991-f6a727054ece",
 
   "resources": [
     {
