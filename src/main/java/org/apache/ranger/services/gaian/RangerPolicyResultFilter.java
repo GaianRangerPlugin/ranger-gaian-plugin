@@ -148,7 +148,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 		{
 			logger.logDetail("filterRowsBatch: UnAuthorized query!" );
 
-			return new DataValueDescriptor[rows.length][rows[0].length];
+			//return new DataValueDescriptor[rows.length][rows[0].length];
+			return new DataValueDescriptor[0][0];
 		}
 
 		else
