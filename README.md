@@ -9,7 +9,7 @@
 
 4. copy policy/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar in target to policy folder.
 
-4. copy all policy folder to Gaian Node an under Gaian dir.
+4. copy all policy folder to Gaian Node under Gaian dir.
 
 On Gaian Node:
 
