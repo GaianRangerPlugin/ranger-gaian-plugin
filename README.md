@@ -36,6 +36,8 @@ we will install the plugin. The best place to do this is just before the section
 
 * copy the rest of policy folder from the source tree to the policy folder. This provides the additional dependent jars that the plugin needs
 
+* Delete GAIANDB.jar & derby.jar as these will be found in the main gaian folder (this will be improved in a future build)
+
 * Copy the configuration files found in this project under policy/conf to policy/conf on gaian. These are the configuration files
 for the plugin which we will edit below
 
