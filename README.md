@@ -1,29 +1,48 @@
 # ranger-gaian-plugin
 
+**Introduction**
 
-1. clone the repo
+This plugin provides support for Ranger policies to be implemented when access data through Gaian.
+For example:
 
-2. cd to git dir
+* Permit/Deny access to Gaian Resources
+* Supports Data Masking [tbd]
+* Ranger Tag support (including being sourced from Apache Atlas) [tbd]
 
-3. mvn clean install
+**Building the plugin**
 
-4. copy policy/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar in target to policy folder.
+Ensure the required build requirements are installed
+* Java 8 (151 or above)
+* Maven 3.50 or later
 
-4. copy all policy folder to Gaian Node under Gaian dir.
+Next extract the source & build:
 
-On Gaian Node:
+    `git clone https://github.com/GaianRangerPlugin/ranger-gaian-plugin.git`
+    `cd ranger-gaian-plugin`
+    `mvn clean install`
 
-1. add jar files and conf in classpath, add these two lines in launchGaianServer.sh:
+This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . This contains the plugin
+code but not the dependent libraries.
 
-  export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/*"
-  
-  export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/conf/"
+**Deploying the plugin to Gaian**
 
-2. configure Gaian to use rangerGaianresultFilter, add this line in the end of gaiandb_config.properties:
+First modify the 'launchGaianServer.sh' script provided by Gaian to add additional directories to the classpath, which is where
+we will install the plugin. The best place to do this is just before the section of code labelled 'automatic jar discovery' :
 
-  SQL_RESULT_FILTER=org.apache.ranger.services.gaian.RangerPolicyResultFilter
+    `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/*"`
+    `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/conf/"`
 
-3. start Gaian Server
+* copy target/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar from your build tree, to this policy folder on Gaian.
+
+* copy the rest of policy folder from the source tree to the policy folder. This provides the additional dependent jars that the plugin needs
+
+* Copy the configuration files found in this project under policy/conf to policy/conf on gaian. These are the configuration files
+for the plugin which we will edit below
+
+* configure Gaian to use RangerPolicyResultFilter, by adding this line at the end of gaiandb_config.properties:
+
+    `SQL_RESULT_FILTER=org.apache.ranger.services.gaian.RangerPolicyResultFilter`
+
 
 **Deploying the Service Definition to Ranger**
 
@@ -53,3 +72,37 @@ Look for gaian & then find the id....
 To delete:
 
 curl  -u admin:admin -X DELETE -H "Accept: application/json" -H "Content-Type: application/json"  http://9.20.65.115:6080/service/public/v2/api/servicedef/102
+
+**Configuring the Gaian plugin**
+
+Modify the following files on gaian under policy/conf:
+
+* ranger-gaian-audit.xml
+
+    To use solr modify the property 'xasecure.audit.solr.is.enabled' to true, and set the correct hostname/solr endpoint in xasecure.audit.solr.solr_url
+
+    Alternatively to log directly to a RDBMS such as mysql modify the property 'xasecure.audit.db.is.enabled' to true, and set the correct hostname/db uri in xasecure.audit.jpa.javax.persistence.jdbc.url
+
+* ranger-gaian-security.xml
+
+    In order for the gaian plugin to be able to retrieve policies, we must specify the REST endpoint. If this is
+    incorrect, or there is no access (firewall etc) ranger policies will not be updated/work
+    
+    Specify this in the ranger.plugin.gaian.policy.rest.url property
+    
+**Creating Ranger Policies**
+
+* Create a ranger service def by logging onto the Ranger UI and selecting resource policies. You should see a section labelled 'Gaian'. Create a new instance of a Gaian service. You MUST use the name 'gaian'. Tag service can be left blank for now, and whilst user/password have to be filled in, they
+will be ignored.
+
+**Verifying the environment**
+
+(tbd)
+
+**Todos**
+
+* Add Masking support to plugin
+* Add tag support to plugin
+* Bundle dependent jars
+* Add info on verifying environment
+* Add info on debugging/logging
