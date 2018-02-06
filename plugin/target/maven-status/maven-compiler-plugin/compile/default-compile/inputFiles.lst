@@ -1,0 +1,6 @@
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/RangerPolicyResultFilter.java
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/QueryContext.java
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/RangerGaianResource.java
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/RangerGaianAuthorizer.java
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/GaianAuthorizer.java
+/Users/jonesn/IdeaProjects/ranger-gaian-plugin/plugin/src/main/java/org/apache/ranger/services/gaian/GaianAuthorizationException.java

@@ -15,54 +15,106 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.ibm</groupId>
+    <groupId>org.gaian</groupId>
     <version>1.0.0-SNAPSHOT</version>
-    <artifactId>ranger-gaian-plugin</artifactId>
-    <name>Ranger Gaian Plugin</name>
-    <description>Ranger Gaian Plugin</description>
-    <packaging>jar</packaging>
+    <artifactId>ranger-gaian-security</artifactId>
+    <name>Gaian Security with Ranger</name>
+    <description>Ranger Gaian Security support</description>
+    <packaging>pom</packaging>
+    <url>https://issues.apache.org/jira/browse/RANGER-1488</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <dependencies>
-        <dependency>
-            <!-- The gaianDB jar is taken from the latest distribution  -->
-            <!-- In future this could be pushed to a maven repo        -->
-            <groupId>gaiandb</groupId>
-            <artifactId>com.ibm.gaiandb</artifactId>
-            <version>2.1.8_20160523</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/policy/GAIANDB.jar</systemPath>
-        </dependency>
-        <dependency>
-            <!-- The derby jar is taken from the latest distribution      -->
-            <!-- 10.8.3.1.                                       -->
-            <!-- will verify if can be taken from live maven repo instead -->
-            <groupId>gaiandb</groupId>
-            <artifactId>com.apache.derby</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/policy/derby.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <version>1.2</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ranger</groupId>
-            <artifactId>ranger-plugins-common</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.ranger</groupId>
-            <artifactId>ranger-plugins-audit</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.5</version>
-        </dependency>
-    </dependencies>
+
+
+    <!-- list of submodules -->
+    <modules>
+        <module>plugin</module>
+     </modules>
+
+    <!-- common build stuff -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.codehaus.mojo</groupId>
+                    <artifactId>build-helper-maven-plugin</artifactId>
+                    <version>1.9.1</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <version>3.7.0</version>
+                    <configuration>
+                        <useIncrementalCompilation>false</useIncrementalCompilation>
+                        <source>1.8</source>
+                        <target>1.8</target>
+                        <encoding>UTF-8</encoding>
+                        <maxmem>1024m</maxmem>
+                        <fork>true</fork>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+                <plugin>
+                    <artifactId>maven-assembly-plugin</artifactId>
+                    <version>3.1.0</version>
+                    <configuration>
+                        <descriptorRefs>
+                           <descriptorRef>jar-with-dependencies</descriptorRef>
+                        </descriptorRefs>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <id>make-assembly</id> <!-- this is used for inheritance merges -->
+                            <phase>package</phase> <!-- bind to the packaging phase -->
+                            <goals>
+                                <goal>single</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-jar-plugin</artifactId>
+                    <version>3.0.2</version>
+                </plugin>
+              </plugins>
+        </pluginManagement>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-enforcer-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <id>enforce-versions</id>
+                        <goals>
+                            <goal>enforce</goal>
+                        </goals>
+                        <configuration>
+                            <rules>
+                                <requireMavenVersion>
+                                    <version>[3.5.0,)</version>
+                                    <message>** MAVEN VERSION ERROR ** Maven 3.5.0 or above is required. See https://maven.apache.org/install.html </message>
+                                </requireMavenVersion>
+                                <requireJavaVersion>
+                                    <level>ERROR</level>
+                                    <version>[1.8.0-151,)</version>
+                                    <message>** JAVA VERSION ERROR ** Java 8 (Update 151) or above is required.</message>
+                                </requireJavaVersion>
+                                <requireJavaVersion>
+                                    <level>WARN</level>
+                                    <version>(,1.9]</version>
+                                    <message>** JAVA VERSION WARNING ** Java 9 and above has not been tested with Atlas.</message>
+                                </requireJavaVersion>
+                            </rules>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
