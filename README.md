@@ -107,3 +107,15 @@ will be ignored.
 * Bundle dependent jars
 * Add info on verifying environment
 * Add info on debugging/logging
+
+And specifically for the build refactoring work in progress:
+
+ * Check if right jars are included
+ * check if the plugin actually works after these changes!
+ * Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
+ * update the README.md
+ * see what other cleaning up is needed of the poms
+ 
+I may also
+ * check dependency versions. many were back level, though it may depend what ranger built with
+ 
