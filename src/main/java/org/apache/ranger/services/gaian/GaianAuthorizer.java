@@ -24,5 +24,7 @@ public interface GaianAuthorizer {
 
 	boolean isAuthorized(QueryContext queryContext) throws GaianAuthorizationException;
 
+	void applyRowFilterAndColumnMasking(QueryContext queryContext);
+
 	void cleanUp();
 }

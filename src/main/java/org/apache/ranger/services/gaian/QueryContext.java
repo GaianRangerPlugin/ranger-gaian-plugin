@@ -38,6 +38,8 @@ public class QueryContext{
 
     private String resource;
 
+    private List<String> columnTransformers;
+
 
 
     public String getUser(){ return this.user; }
@@ -80,6 +82,14 @@ public class QueryContext{
 
     public void setResourceType(String resource) {
         this.resource = resource;
+    }
+
+    public List<String> getColumnTransformers() {
+        return columnTransformers;
+    }
+
+    public void setColumnTransformers(List<String> columnTransformers) {
+        this.columnTransformers = columnTransformers;
     }
 
     @Override
