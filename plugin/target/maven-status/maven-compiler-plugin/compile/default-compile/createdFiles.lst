@@ -1,10 +1,10 @@
-org/apache/ranger/services/gaian/RangerGaianAccessRequest.class
-org/apache/ranger/services/gaian/GaianAuthorizationException.class
-org/apache/ranger/services/gaian/RangerGaianResource.class
-org/apache/ranger/services/gaian/RangerPolicyResultFilter.class
 org/apache/ranger/services/gaian/QueryContext.class
 org/apache/ranger/services/gaian/RangerGaianAuthorizer.class
+org/apache/ranger/services/gaian/RangerGaianAccessRequest.class
+org/apache/ranger/services/gaian/GaianAuthorizationException.class
 org/apache/ranger/services/gaian/GaianResourceType.class
 org/apache/ranger/services/gaian/RangerGaianPlugin.class
+org/apache/ranger/services/gaian/RangerGaianResource.class
+org/apache/ranger/services/gaian/RangerPolicyResultFilter.class
 org/apache/ranger/services/gaian/GaianAuthorizer.class
 org/apache/ranger/services/gaian/RangerGaianResource$1.class

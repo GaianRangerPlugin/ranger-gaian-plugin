@@ -107,7 +107,7 @@
             <groupId>org.apache.hadoop</groupId>
             <artifactId>hadoop-common</artifactId>
             <version>2.7.3</version>
-            <scope>provided</scope>
+            <scope>runtime</scope>
         </dependency>
         <!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-core-asl -->
         <dependency>
@@ -192,7 +192,17 @@
             </execution>
         </executions>
     </plugin>
+
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>plugin/main/resources/conf</directory>
+                <excludes>
+                    <exclude>**/*.xml</exclude>
+                </excludes>
+            </resource>
+        </resources>
     </build>
 
 </project>
