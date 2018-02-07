@@ -121,19 +121,9 @@ and then create column access/deny policies for testing.
 
 * Add Masking support to plugin
 * Add tag support to plugin
-* Bundle dependent jars
+* Add proxy auth module
 * Add info on verifying environment
 * Add info on debugging/logging
-<<<<<<< HEAD
-
-And specifically for the build refactoring work in progress:
-
- * Check if right jars are included
- * check if the plugin actually works after these changes!
- * Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
- * update the README.md
- * see what other cleaning up is needed of the poms
- 
-I may also
- * check dependency versions. many were back level, though it may depend what ranger built with
+* Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
+* check dependency versions. some are back level, though it may depend what ranger built with
  
