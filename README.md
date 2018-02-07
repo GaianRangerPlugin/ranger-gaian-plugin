@@ -9,6 +9,8 @@ For example:
 * Supports Data Masking [tbd]
 * Ranger Tag support (including being sourced from Apache Atlas) [tbd]
 
+See doc/SQLBehaviour.md for example SQL statements and how they will behave
+
 **Building the plugin**
 
 Ensure the required build requirements are installed
@@ -92,11 +94,17 @@ Modify the following files on gaian under policy/conf:
     Specify this in the ranger.plugin.gaian.policy.rest.url property
     
     Do not change the property ranger.plugin.gaian.service.name and leave it set to 'gaian'
+
+**Verifying the environment**
+
+(tbd)
     
 **Creating Ranger Policies**
 
 * Create a ranger service def by logging onto the Ranger UI and selecting resource policies. You should see a section labelled 'Gaian'. Create a new instance of a Gaian service. You MUST use the name 'gaian'. Tag service can be left blank for now, and whilst user/password have to be filled in, they
 will be ignored.
+
+
 
 **Testing Policies**
 
@@ -112,10 +120,6 @@ select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
 
 and then create column access/deny policies for testing.
 
-
-**Verifying the environment**
-
-(tbd)
 
 **Todos**
 
