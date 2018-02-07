@@ -9,3 +9,5 @@ winpkg/target
 .idea
 *.class
 /target/**
+/plugin/target/**
+
