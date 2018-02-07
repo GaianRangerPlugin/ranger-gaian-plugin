@@ -107,7 +107,9 @@ will be ignored.
 
 * Test with specific column query:
 For this to be able to work correctly, must use derby vti syntax. For example, if only query column LOCATION in table LT0, the syntax is:
+
 select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
+
 and then create column access/deny policies for testing.
 
 
