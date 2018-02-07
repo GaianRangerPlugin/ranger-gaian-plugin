@@ -21,8 +21,12 @@ Next extract the source & build:
     `cd ranger-gaian-plugin`
     `mvn clean install`
 
-This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . This contains the plugin
-code but not the dependent libraries.
+This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . 
+This contains the plugin AND the dependent libraries.
+
+NOTE: If you had an earlier version of this plugin you may have
+dependent libraries in the policy directory. These are no longer required,
+you ONLY need the jar file and the config files
 
 **Deploying the plugin to Gaian**
 
@@ -32,13 +36,9 @@ we will install the plugin. The best place to do this is just before the section
     `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/*"`
     `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/conf/"`
 
-* copy target/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar from your build tree, to this policy folder on Gaian.
+* copy plugin/target/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar from your build tree, to this policy folder on Gaian.
 
-* copy the rest of policy folder from the source tree to the policy folder. This provides the additional dependent jars that the plugin needs
-
-* Delete GAIANDB.jar & derby.jar as these will be found in the main gaian folder (this will be improved in a future build)
-
-* Copy the configuration files found in this project under policy/conf to policy/conf on gaian. These are the configuration files
+* Copy the configuration files found in this project under plugin/src/main/resources/conf to policy/conf on gaian. These are the configuration files
 for the plugin which we will edit below
 
 * configure Gaian to use RangerPolicyResultFilter, by adding this line at the end of gaiandb_config.properties:
