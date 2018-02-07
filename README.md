@@ -98,6 +98,21 @@ Modify the following files on gaian under policy/conf:
 * Create a ranger service def by logging onto the Ranger UI and selecting resource policies. You should see a section labelled 'Gaian'. Create a new instance of a Gaian service. The service name should be the same as ranger.plugin.gaian.service.name in ranger-gaian-security.xml, by default it is 'gaian'. Tag service can be left blank for now, and whilst user/password have to be filled in, they
 will be ignored.
 
+**Testing Policies**
+
+* A quick test:
+0. Run testGaianDB.sh, it should show an empty table.
+1. Create a policy of schema *, table LT0, column * on Ranger UI.
+2. run testGaianDB.sh, it should table LT0 correctly.
+
+* Test with specific column query:
+For this to be able to work correctly, must use derby vti syntax. For example, if only query column LOCATION in table LT0, the syntax is:
+
+select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
+
+and create column access/deny policies for testing.
+
+
 **Verifying the environment**
 
 (tbd)
