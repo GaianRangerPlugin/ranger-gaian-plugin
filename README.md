@@ -103,14 +103,12 @@ will be ignored.
 * A quick test:
 0. Run testGaianDB.sh, it should show an empty table.
 1. Create a policy of schema *, table LT0, column * on Ranger UI.
-2. run testGaianDB.sh, it should table LT0 correctly.
+2. run testGaianDB.sh, it should show table LT0 correctly.
 
 * Test with specific column query:
 For this to be able to work correctly, must use derby vti syntax. For example, if only query column LOCATION in table LT0, the syntax is:
-
 select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
-
-and create column access/deny policies for testing.
+and then create column access/deny policies for testing.
 
 
 **Verifying the environment**
