@@ -9,6 +9,8 @@ For example:
 * Supports Data Masking [tbd]
 * Ranger Tag support (including being sourced from Apache Atlas) [tbd]
 
+See doc/SQLBehaviour.md for example SQL statements and how they will behave
+
 **Building the plugin**
 
 Ensure the required build requirements are installed
@@ -21,8 +23,12 @@ Next extract the source & build:
     `cd ranger-gaian-plugin`
     `mvn clean install`
 
-This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . This contains the plugin
-code but not the dependent libraries.
+This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . 
+This contains the plugin AND the dependent libraries.
+
+NOTE: If you had an earlier version of this plugin you may have
+dependent libraries in the policy directory. These are no longer required,
+you ONLY need the jar file and the config files
 
 **Deploying the plugin to Gaian**
 
@@ -32,13 +38,9 @@ we will install the plugin. The best place to do this is just before the section
     `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/*"`
     `export CLASSPATH="$CLASSPATH:/root/gaiandb/gaiandb/policy/conf/"`
 
-* copy target/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar from your build tree, to this policy folder on Gaian.
+* copy plugin/target/ranger-gaian-plugin-1.0.0-SNAPSHOT.jar from your build tree, to this policy folder on Gaian.
 
-* copy the rest of policy folder from the source tree to the policy folder. This provides the additional dependent jars that the plugin needs
-
-* Delete GAIANDB.jar & derby.jar as these will be found in the main gaian folder (this will be improved in a future build)
-
-* Copy the configuration files found in this project under policy/conf to policy/conf on gaian. These are the configuration files
+* Copy the configuration files found in this project under plugin/src/main/resources/conf to policy/conf on gaian. These are the configuration files
 for the plugin which we will edit below
 
 * configure Gaian to use RangerPolicyResultFilter, by adding this line at the end of gaiandb_config.properties:
@@ -91,19 +93,41 @@ Modify the following files on gaian under policy/conf:
     
     Specify this in the ranger.plugin.gaian.policy.rest.url property
     
+    Do not change the property ranger.plugin.gaian.service.name and leave it set to 'gaian'
+
+**Verifying the environment**
+
+(tbd)
+    
 **Creating Ranger Policies**
 
 * Create a ranger service def by logging onto the Ranger UI and selecting resource policies. You should see a section labelled 'Gaian'. Create a new instance of a Gaian service. You MUST use the name 'gaian'. Tag service can be left blank for now, and whilst user/password have to be filled in, they
 will be ignored.
 
-**Verifying the environment**
 
-(tbd)
+
+**Testing Policies**
+
+* A quick test:
+0. Run testGaianDB.sh, it should show an empty table.
+1. Create a policy of schema *, table LT0, column * on Ranger UI.
+2. run testGaianDB.sh, it should show table LT0 correctly.
+
+* Test with specific column query:
+For this to be able to work correctly, must use derby vti syntax. For example, if only query column LOCATION in table LT0, the syntax is:
+
+select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
+
+and then create column access/deny policies for testing.
+
 
 **Todos**
 
 * Add Masking support to plugin
 * Add tag support to plugin
-* Bundle dependent jars
+* Add proxy auth module
 * Add info on verifying environment
 * Add info on debugging/logging
+* Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
+* check dependency versions. some are back level, though it may depend what ranger built with
+ 

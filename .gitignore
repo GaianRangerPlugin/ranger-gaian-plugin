@@ -8,4 +8,6 @@ winpkg/target
 .DS_Store
 .idea
 *.class
-/target/
+/target/**
+/plugin/target/**
+
