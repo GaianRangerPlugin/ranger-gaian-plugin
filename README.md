@@ -11,6 +11,9 @@ For example:
 
 See doc/SQLBehaviour.md for example SQL statements and how they will behave
 
+LIMITATIONS
+ * Currently the user group determined is always 'users'
+
 **Building the plugin**
 
 Ensure the required build requirements are installed
