@@ -50,6 +50,10 @@ for the plugin which we will edit below
 
     `SQL_RESULT_FILTER=org.apache.ranger.services.gaian.RangerPolicyResultFilter`
 
+* configure Gaian to use Table Functions
+    `MANAGE_LTVIEWS_WITH_TABLE_FUNCTIONS=true`
+    
+    Note that if this is changed when gaian is stopped there appears to be a bug whereby it is not picked up...  in which case it can be forced by deleting the 'gaian' subdirectory which will cause views etc to be recreated..... I'll raise a separate issue on this in gaian GitHub.
 
 **Deploying the Service Definition to Ranger**
 
@@ -117,9 +121,9 @@ will be ignored.
 2. run testGaianDB.sh, it should show table LT0 correctly.
 
 * Test with specific column query:
-For this to be able to work correctly, must use derby vti syntax. For example, if only query column LOCATION in table LT0, the syntax is:
+For this to be able to work correctly, must use derby virtual table syntax. For example, if only query column LOCATION in table LT0, the syntax is:
 
-select LOCATION from new com.ibm.db2j.GaianTable('LT0') LT0
+select firstname,lastname,birth_date from TABLE(VEMPLOYEE('VEMPLOYEE')) VEMP FETCH FIRST 100 rows only
 
 and then create column access/deny policies for testing.
 
