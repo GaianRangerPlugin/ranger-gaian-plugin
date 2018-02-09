@@ -16,10 +16,12 @@
 
 package org.apache.ranger.services.gaian;
 
+import com.ibm.gaiandb.GaianDBProcedureUtils;
 import com.ibm.gaiandb.Util;
 import com.ibm.gaiandb.Logger;
 import com.ibm.gaiandb.policyframework.SQLResultFilterX;
 
+import java.sql.DriverManager;
 import java.sql.ResultSetMetaData;
 import java.util.Arrays;
 import java.util.Random;
@@ -29,7 +31,11 @@ import java.util.Set;
 import java.util.HashSet;
 import java.sql.SQLException;
 
+import org.apache.derby.iapi.services.context.ContextManager;
+import org.apache.derby.iapi.sql.conn.LanguageConnectionContext;
+import org.apache.derby.iapi.sql.conn.StatementContext;
 import org.apache.derby.iapi.types.DataValueDescriptor;
+import org.apache.derby.impl.jdbc.EmbedConnection;
 
 // call rangerGaianPlugin
 // passin all the params from user query
@@ -37,28 +43,23 @@ import org.apache.derby.iapi.types.DataValueDescriptor;
 /**
  * Initial policy plugin for gaianDB, as part of the VirtualDataConnector project
  * 
- * To activate this policy class, you first need to add this class to Gaian's classpath.
- * You can do this in several ways:
- * 	- Place this class under <Gaian install path>/policy/
- * 	- Add the path containing the top level package of this class (i.e. "policy") to the classpath in launchGaianServer.bat(/sh)
- *  - Build a jar file with this class inside it, and place that jar in <Gaian install path>/lib/ or <Gaian install path>/lib/ext/   
- * 
- * Finally, start the Gaian node and activate your policy - this can be done with the following SQL:
- * call setconfigproperty('SQL_RESULT_FILTER', 'policy.SamplePolicyNoFilters')
+ * Refer to the toplevel README.md in this project for further information on how to build, deploy & use
  * 
  * @author jonesn@uk.ibm.com
  */
 
-// We could IMPLEMENT SQLResultFilter? but this alternate approach seems more favoured now
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
     //	Use PROPRIETARY notice if class contains a main() method, otherwise use COPYRIGHT notice.
-	public static final String COPYRIGHT_NOTICE = "(c) Copyright IBM Corp. 2017";
+	public static final String COPYRIGHT_NOTICE = "(c) Copyright IBM Corp. 2018";
 
 	// Initialize gaianDB logging
 	private static final Logger logger = new Logger( "RangerPolicyResultFilter", 25 );
 
+	// Query context is used to build up the context of the query through a series of
+	// calls made to this class by Gaian, so that we can then pass to the ranger policy engine
 	private QueryContext queryContext = new QueryContext();
+
 	private GaianAuthorizer authorizer = new RangerGaianAuthorizer();
 	private boolean authorizeResult = true;
 	
@@ -76,7 +77,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 		try {
 			queryContext.setTableName(logicalTableName);
 			queryContext.setActionType("SELECT");
-			queryContext.setSchema("Gaian");
+			queryContext.setSchema("Gaian"); // Hardcoded for now
+
+			// This gets overwritten in setQueriedColumns, which provides a more precise list
+			// accounting for what columns are used in select & predicate.
 			List<String> columns = new ArrayList<String>();
 			int count = logicalTableResultSetMetaData.getColumnCount();
 			for (int i = 1; i <= count; i++) {
@@ -85,18 +89,18 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			}
 			queryContext.setColumns(columns);
 			queryContext.setResourceType("COLUMN");
-			queryContext.setUser("admin");
+
+			// User would have been set below (look for OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)
+			// For now we HARDCODE to group users - until LDAP integration done.
 			Set<String> users = new HashSet<String>();
 			users.add("users");
 			queryContext.setUserGroups(users);
 
 
-			//build queryContext
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
-
 		return authorizeResult; // allow query to continue (i.e. accept this logical table)
 	}
 	
@@ -104,7 +108,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 		logger.logDetail("Entered setForwardingNode(), forwardingNode: " + nodeName);
 		return true; // allow query to continue (i.e. accept this forwardingNode)
 	}
-	
+
+	// Used to parse the GDB_CREDENTIALS string passed on every statement. Not used by the ranger plugin support
 	public boolean setUserCredentials(String credentialsStringBlock) {
 		logger.logDetail("Entered setUserCredentials(), credentialsStringBlock: " + credentialsStringBlock);
 		return true; // allow query to continue (i.e. accept this credentialsStringBlock)
@@ -116,6 +121,12 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 		return -1; // allow all records to be returned (i.e. don't impose a maximum number)
 	}
 
+	// This only works correctly when either using VTI or table function syntax
+	// VTI : select * from new com.ibm.db2j.GaianTable('EMPLOYEE') EMPLOYEE
+	// Table function: select * from TABLE(VEMPLOYEE('VEMPLOYEE')) VEMP
+	// If derby views are used the column list is ALL of those in the queried table, even ones unusued
+	// ie : select * from VEMPLOYEE
+	// typically leading to more strict checks - ie failing if any restricted column even exists in the table
 	public boolean setQueriedColumns(int[] queriedColumns) {
 		logger.logDetail("Entered setQueriedColumns(), queriedColumns: " + Util.intArrayAsString(queriedColumns));
 
@@ -133,6 +144,9 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			e.printStackTrace();
 		}
 
+		// As of 9 Feb 2018 there is a bug in GaianTable that means this return is ignored.
+		// We therefore check this return when processing rows in result set
+		// Once fixed the return below will be respected and the backend query will be skipped to improve efficiency
 		return authorizeResult; // allow query to continue (i.e. accept that all these columns be queried)
 	}
 	
@@ -162,7 +176,32 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 	 * a given set of arguments will be expected, we well as a given return object.
 	 */
 	protected Object executeOperationImpl(String opID, Object... args) {
-		logger.logDetail("Entered executeOperation(), opID: " + opID + ", args: " + (null == args ? null : Arrays.asList(args)) );		
+		logger.logDetail("Entered executeOperation(), opID: " + opID + ", args: " + (null == args ? null : Arrays.asList(args)) );
+
+		// If we get OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED it's passing us the
+		// userId to be used for the security check, so save it in context
+		boolean haveUser=false;
+
+		if (null!= opID && opID.equals(OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED))
+		{
+			if (args.length>=1) {
+				if (null != args[0]) { // shouldn't be >1 for this opcode...
+					String gaianUser=args[0].toString();
+					queryContext.setUser(gaianUser);
+					logger.logInfo("Found user for query :" + gaianUser);
+					haveUser=true;
+				}
+			}
+
+			// This will happen if VTI syntax is used on the query, ie
+			// select firstname from new com.ibm.db2.db2j('VEMPLOYEE') VEMPLOYEE
+			// If this happens log, and make up a userId unlikely to be used, so hopefully will default to a safe
+			// option. In future may fail the query entirely
+			if (haveUser==false) {
+				queryContext.setUser("<UNKNOWN>");
+				logger.logImportant("Unable to retrieve user. Ensure Table functions configured and used in Query. Defaulting to setting user to <UNKNOWN>");
+			}
+		}
 		return null; // Generic return of 'null' just lets the query proceed. Otherwise, the returned object should depend on the opID.
 	}
 
