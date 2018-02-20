@@ -33,6 +33,17 @@ NOTE: If you had an earlier version of this plugin you may have
 dependent libraries in the policy directory. These are no longer required,
 you ONLY need the jar file and the config files
 
+**Running Unit Tests**
+
+Unit tests are based on 'spock'.
+
+Due to a current bug in the pom a) Tests do not run automatically from maven and b) To run within IntelliJ right click on 
+plugin/src/test and click 'Mark Directory As -> Test Sources'. This will need to be redone if you refresh/reimport from maven. This will
+be fixed in a later update. You can then navigate to plugin/src/test & open up the groovy/spock test file and run from there. Other
+modules will be coded in a similar way
+
+
+
 **Deploying the plugin to Gaian**
 
 First modify the 'launchGaianServer.sh' script provided by Gaian to add additional directories to the classpath, which is where
