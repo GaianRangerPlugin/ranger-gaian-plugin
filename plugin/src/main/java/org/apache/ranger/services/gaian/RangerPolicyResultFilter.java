@@ -50,6 +50,7 @@ import org.apache.derby.impl.jdbc.EmbedConnection;
 
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
+
     //	Use PROPRIETARY notice if class contains a main() method, otherwise use COPYRIGHT notice.
 	public static final String COPYRIGHT_NOTICE = "(c) Copyright IBM Corp. 2018";
 
