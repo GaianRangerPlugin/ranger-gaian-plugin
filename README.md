@@ -196,6 +196,9 @@ whilst a failure case will look like:
 
 since we first try proxy auth (if parms specified) & then fall back to regular authentication
 
+Note that Gaian converts all users to upper case. However most users in ldap are typically lower case. Ranger is case sensitive meaning that
+policies will not match. In the current version therefore ALL userids through gaian are mapped to lower case before policy checks occur.
+
 **Verifying the environment**
 
 (tbd)
