@@ -112,6 +112,12 @@ Modify the following files on gaian under policy/conf:
     Specify this in the ranger.plugin.gaian.policy.rest.url property
     
     Do not change the property ranger.plugin.gaian.service.name and leave it set to 'gaian'
+    
+* log4J.properties
+
+    This is a simple example to outlog debug logs to the console. Modify as required. It is likely helpful for debugging
+    in this stage of development, but in an eventual deployment log4j.properties would likely be deployed elsewhere in the 
+    environment
 
 **Verifying the environment**
 
