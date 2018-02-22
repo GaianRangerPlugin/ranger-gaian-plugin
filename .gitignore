@@ -10,4 +10,5 @@ winpkg/target
 *.class
 /target/**
 /plugin/target/**
+/impersonation/target/**
 

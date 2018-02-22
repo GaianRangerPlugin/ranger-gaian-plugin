@@ -51,6 +51,7 @@ import org.apache.derby.impl.jdbc.EmbedConnection;
 
 public class RangerPolicyResultFilter extends SQLResultFilterX {
 
+
     //	Use PROPRIETARY notice if class contains a main() method, otherwise use COPYRIGHT notice.
 	public static final String COPYRIGHT_NOTICE = "(c) Copyright IBM Corp. 2018";
 
@@ -201,7 +202,8 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 		{
 			if (args.length>=1) {
 				if (null != args[0]) { // shouldn't be >1 for this opcode...
-					String gaianUser=args[0].toString();
+					// Ranger appears to be case significant. Users normally lowercase but gaian forces to upper case....
+					String gaianUser=args[0].toString().toLowerCase();
 					queryContext.setUser(gaianUser);
 					logger.logInfo("Found user for query :" + gaianUser);
 					haveUser=true;
