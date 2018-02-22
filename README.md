@@ -119,6 +119,64 @@ Modify the following files on gaian under policy/conf:
     in this stage of development, but in an eventual deployment log4j.properties would likely be deployed elsewhere in the 
     environment
 
+**Adding support for User Impersonation**
+
+The impersonation/ directory provides a module to allow a valid gaian user to assert that they are in fact
+acting on behalf of another user, which does not need to be pre-configured in gaian. This allows
+Ranger policies to operate on behalf of a end-user rather than a generic service account.
+
+To install this support 
+
+* copy the jar
+
+    Copy impersonation/target/gaian-impersonation-1.0.0-SNAPSHOT.jar to the 'policy' directory in Gaian (the same directory where you 
+    added the ranger plugin)
+    
+* modify derby.properties
+
+    Change the auth class in the configuration similar to as follows (the old entry is commented out):
+    
+    `#derby.authentication.provider=com.ibm.gaiandb.GaianAuthenticator`
+    `derby.authentication.provider=org.apache.derby.authentication.UserAuthenticator`
+    
+Check gaian works by starting it. If the support is not installed gaian will fail to start with many errors, and
+in gaiandb.log you will find an entry stating:
+
+    `2018-02-22 14:32:54.780 ********** GDB_WARNING: ENGINE_JDBC_CONN_ATTEMPT_ERROR: Failed JDBC Connection attempt in 172 ms for: jdbc:derby:gaiandb;create=true, cause: java.sql.SQLNonTransientConnectionException: Connection refused : FATAL: There is no Authentication Service for the system; Common issues: missing jdbc driver, network/database unavailability (e.g. firewall), incorrect user/password and/or insufficient database access rights (e.g. if derby.database.defaultConnectionMode=noAccess in derby.properties)`
+
+If this is seen check the jar file, properties entry, classpath & location ...
+
+To make use of this support connect to the database with properties set as follows:
+* User
+
+The user that derby/gaian should act on behalf of, once authentication is completed
+
+* Password
+
+If proxy-user/pwd is not used this is the password of the User. 
+If not, it has to be specified as a non null string, but is ignored
+
+* proxy-user
+
+Specifies the service account (aka NPA) to authenticate as
+
+* proxy-pwd
+
+Specifies the proxy account's password
+
+So for example instead of using a string similar to
+    `jdbc:derby://localhost:6414/gaiandb;user=gaiandb;password=passw0rd`
+Use
+    `jdbc:derby://localhost:6414/gaiandb;user=nigel;password=x;proxy-user=gaiandb;proxy-pwd=passw0rd`
+
+After authentication derby/gaian will see the user as 'nigel' even though gaiandb/passw0rd is the user/pass setup in gaian.
+Therefore ranger policies can be used that refer to 'nigel' or the groups they are a member of (when implemented)
+
+Note that with this plugin installed 
+* you can still use the original way of connecting as a generic user
+* with either method the service user specified must have the correct password provided    
+
+
 **Verifying the environment**
 
 (tbd)
