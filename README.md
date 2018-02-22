@@ -136,15 +136,17 @@ To install this support
 
     Change the auth class in the configuration similar to as follows (the old entry is commented out):
     
+    `#derby.authentication.provider=BUILTIN`
     `#derby.authentication.provider=com.ibm.gaiandb.GaianAuthenticator`
-    `derby.authentication.provider=org.apache.derby.authentication.UserAuthenticator`
+    `derby.authentication.provider=org.apache.gaiandb.security.ProxyUserAuthenticator`
+    `derby.connection.requireAuthentication=TRUE`
     
 Check gaian works by starting it. If the support is not installed gaian will fail to start with many errors, and
 in gaiandb.log you will find an entry stating:
 
     `2018-02-22 14:32:54.780 ********** GDB_WARNING: ENGINE_JDBC_CONN_ATTEMPT_ERROR: Failed JDBC Connection attempt in 172 ms for: jdbc:derby:gaiandb;create=true, cause: java.sql.SQLNonTransientConnectionException: Connection refused : FATAL: There is no Authentication Service for the system; Common issues: missing jdbc driver, network/database unavailability (e.g. firewall), incorrect user/password and/or insufficient database access rights (e.g. if derby.database.defaultConnectionMode=noAccess in derby.properties)`
 
-If this is seen check the jar file, properties entry, classpath & location ...
+If this is seen check the jar file, properties entry, classpath & location ... derby.log may have further information bb
 
 To make use of this support connect to the database with properties set as follows:
 * User
@@ -176,6 +178,23 @@ Note that with this plugin installed
 * you can still use the original way of connecting as a generic user
 * with either method the service user specified must have the correct password provided    
 
+You can check correct proxy auth by looking in gaiandb.log for lines similar to:
+
+    2018-02-22 15:06:49.806~869155397 ProxyUserAuthenticator -----> Performing proxy authentication with user:gaiandb on behalf of:nigel
+    2018-02-22 15:21:51.567~626209601 ProxyUserAuthenticator -----> authentication was successful
+    
+or for regular users:
+
+    2018-02-22 15:21:51.567~626125459 ProxyUserAuthenticator -----> Performing regular authentication for user:gaiandb
+    2018-02-22 15:21:51.567~626209601 ProxyUserAuthenticator -----> authentication was successful
+
+whilst a failure case will look like:
+
+    2018-02-22 15:24:04.519~577348241 ProxyUserAuthenticator -----> Performing proxy authentication with user:gaiandb on behalf of:nigel
+    2018-02-22 15:24:04.519~577422022 ProxyUserAuthenticator -----> Performing regular authentication for user:nigel
+    2018-02-22 15:24:04.519~577484342 ProxyUserAuthenticator -----> authentication failed
+
+since we first try proxy auth (if parms specified) & then fall back to regular authentication
 
 **Verifying the environment**
 
@@ -202,6 +221,10 @@ select firstname,lastname,birth_date from TABLE(VEMPLOYEE('VEMPLOYEE')) VEMP FET
 
 and then create column access/deny policies for testing.
 
+If instead VTI syntax is used, the user id cannot be retrieved and will be set to <UNKNOWN>
+If regular table/view syntax is used it is assumed ALL columns are access so policies will be unnecessarily restrictive
+
+This is due to current derby/gaian integration limitations.
 
 **Todos**
 
