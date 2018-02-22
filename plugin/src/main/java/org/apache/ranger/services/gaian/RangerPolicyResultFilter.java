@@ -31,6 +31,7 @@ import java.util.Set;
 import java.util.HashSet;
 import java.sql.SQLException;
 
+import org.apache.derby.iapi.error.StandardException;
 import org.apache.derby.iapi.services.context.ContextManager;
 import org.apache.derby.iapi.sql.conn.LanguageConnectionContext;
 import org.apache.derby.iapi.sql.conn.StatementContext;
@@ -89,6 +90,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			}
 			queryContext.setColumns(columns);
 			queryContext.setResourceType("COLUMN");
+			queryContext.setColumnTransformers(new ArrayList<String>());
 
 			// User would have been set below (look for OP_ID_SET_AUTHENTICATED_DERBY_USER_RETURN_IS_QUERY_ALLOWED)
 			// For now we HARDCODE to group users - until LDAP integration done.
@@ -166,8 +168,21 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 			return new DataValueDescriptor[0][0];
 		}
 
-		else
+		else {
+			try {
+				authorizer.applyRowFilterAndColumnMasking(queryContext);
+				for (int i = 0; i < queryContext.getColumns().size(); i++) {
+					if (queryContext.getColumnTransformers().get(i) != queryContext.getColumns().get(i)) {
+						for (int j = 0; j < rows.length; j++) {
+							rows[j][i].setValue(queryContext.getColumnTransformers().get(i));
+						}
+					}
+				}
+			} catch(StandardException e) {
+				e.printStackTrace();
+			}
 			return rows; // allow query to continue (i.e. accept this logical table)
+		}
 	}
 	
 	/**

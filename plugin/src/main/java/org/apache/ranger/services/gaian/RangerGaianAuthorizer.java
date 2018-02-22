@@ -230,6 +230,7 @@ public class RangerGaianAuthorizer implements GaianAuthorizer {
                 ret = "if(" + maskCondition + ", " + ret + ", " + columnName + ")";
             }
             */
+
         }
 
         columnTransformers.add(columnTransformer);
