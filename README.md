@@ -37,9 +37,10 @@ you ONLY need the jar file and the config files
 
 Unit tests are based on 'spock'.
 
-Due to a current bug in the pom a) Tests do not run automatically from maven and b) To run within IntelliJ right click on 
-plugin/src/test and click 'Mark Directory As -> Test Sources'. This will need to be redone if you refresh/reimport from maven. This will
-be fixed in a later update. You can then navigate to plugin/src/test & open up the groovy/spock test file and run from there. Other
+Due to a current bug in the pom tests do not run automatically from maven
+
+To run within IntelliJ right click on 
+plugin/src/test or impersonation/src/test and  open up the groovy/spock test file and run from there by clicking on the green triangles. Other
 modules will be coded in a similar way
 
 

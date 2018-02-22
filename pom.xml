@@ -50,6 +50,21 @@
 
     <!-- common build stuff which is pretty much used as-is by all children - compiler & unit testing-->
     <build>
+
+        <!-- Should be default, but needed to keep IntelliJ happy -->
+        <sourceDirectory>src/main</sourceDirectory>
+        <testSourceDirectory>src/test</testSourceDirectory>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+            </testResource>
+        </testResources>
+
         <plugins>
 
             <!-- These three are pretty standard -->
@@ -165,6 +180,7 @@
                     <useFile>false</useFile>
                     <includes>
                         <include>**/*Spec.java</include>
+                        <include>**/*Test.java</include>
                     </includes>
                 </configuration>
             </plugin>
