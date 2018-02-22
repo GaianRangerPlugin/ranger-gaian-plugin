@@ -24,6 +24,11 @@
     <description>Ranger Gaian Plugin</description>
     <packaging>jar</packaging>
     <url>https://issues.apache.org/jira/browse/RANGER-1488</url>
+    <parent>
+        <groupId>org.gaian</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+        <artifactId>ranger-gaian-security</artifactId>
+    </parent>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
