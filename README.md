@@ -230,13 +230,15 @@ If regular table/view syntax is used it is assumed ALL columns are access so pol
 
 This is due to current derby/gaian integration limitations.
 
+Data masking should also work, but due to a current issue it will fail if columns in the result set
+(before masking) are null & table functions are in use. 
+
+See RangerPolicyResultFilter:filterRowsBatch for the explanation. This will be addressed in future
+
 **Todos**
 
-* Add Masking support to plugin
 * Add tag support to plugin
-* Add proxy auth module
 * Add info on verifying environment
-* Add info on debugging/logging
 * Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
 * check dependency versions. some are back level, though it may depend what ranger built with
  
