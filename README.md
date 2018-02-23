@@ -240,3 +240,30 @@ This is due to current derby/gaian integration limitations.
 * Create a 'dist' directory or similar with the two relevant jars + instructions + servicedef + policy configuration files
 * check dependency versions. some are back level, though it may depend what ranger built with
  
+**Troubleshooting**
+
+_No Audit log entries_
+
+Look in the ranger plugin output (log4J) ie:
+
+018-02-23 09:43:29 ERROR SolrAuditProvider:192 - Error sending message to Solr
+java.lang.reflect.UndeclaredThrowableException
+	at org.apache.hadoop.security.UserGroupInformation.doAs(UserGroupInformation.java:1713)
+	at org.apache.ranger.audit.provider.MiscUtil.executePrivilegedAction(MiscUtil.java:524)
+	at org.apache.ranger.audit.provider.solr.SolrAuditProvider.log(SolrAuditProvider.java:170)
+	at org.apache.ranger.audit.provider.MultiDestAuditProvider.log(MultiDestAuditProvider.java:114)
+	at org.apache.ranger.audit.provider.AsyncAuditProvider.run(AsyncAuditProvider.java:153)
+	at java.lang.Thread.run(Thread.java:748)
+Caused by: org.apache.solr.client.solrj.SolrServerException: Server refused connection at: http://9.20.65.115:6083/solr/ranger_audits
+
+In this case check the hostname/port specified for solr logging
+
+_Policies are not cached_
+
+If you see
+
+    `2018-02-22 15:48:55 ERROR PolicyRefresher:396 - failed to save policies to cache file '/root/gaiandb/gaiandb/policycache/gaian_gaian.json'`
+    `java.io.FileNotFoundException: /root/gaiandb/gaiandb/policycache/gaian_gaian.json (No such file or directory)`
+
+check the specification of PolicyCache in the plugin configuration file & ensure the directory
+exists and is writeable    
