@@ -16,6 +16,10 @@ LIMITATIONS
 
 **Building the plugin**
 
+This project contains multiple modules for
+ - The ranger plugin (in the 'plugin' subdirectory)
+ - the Impersonation support (in the 'impersonation' subdirectory)
+ 
 Ensure the required build requirements are installed
 * Java 8 (151 or above)
 * Maven 3.50 or later
@@ -26,12 +30,15 @@ Next extract the source & build:
     `cd ranger-gaian-plugin`
     `mvn clean install`
 
-This should produce a plugin built in the 'target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . 
+This should produce the ranger plugin built in the 'plugin\target' directory called ranger-gaian-plugin-1.0.0-SNAPSHOT.jar . 
 This contains the plugin AND the dependent libraries.
 
 NOTE: If you had an earlier version of this plugin you may have
 dependent libraries in the policy directory. These are no longer required,
 you ONLY need the jar file and the config files
+
+Also note the root 'target' directory does not currently contain any packaged deployable
+components (to be aggregated later) and can be ignored.
 
 **Running Unit Tests**
 
