@@ -2,7 +2,7 @@
 {
   "id":99,
   "name": "gaian",
-  "implClass": "",
+  "implClass": "org.apache.ranger.services.gaian.RangerServiceGaian",
   "label": "Gaian",
   "description": "Gaian",
   "options": {
