@@ -179,14 +179,26 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
             int resultSetColumnIndexOffset = 0;
             int querySetColumnIndex = 0;
+            int firstValidRow = 0;
 
             // If there's no rows, masking isn't needed
             if (null != rows && rows.length > 0) {
+
+                for (int i = 0; i < rows.length; i++) {
+                    if (rows[i] != null) {
+                        firstValidRow = i;
+                        break;
+                    }
+                }
+
+                // if all the rows are null return directly
+                if (firstValidRow == rows.length) return rows;
+
                 while (querySetColumnIndex < queryContext.getColumns().size()) {
                     // We ONLY look at the first row - this will fail if the data is null
                     // instead should be consulting metadata (work needed to resolve)
                     // BIG HACK warning....
-                    if (rows[0][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
+                    if (rows[firstValidRow][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
                         resultSetColumnIndexOffset++; // increment the fudge factor
                         continue; // resume with the next expected column
                     }
@@ -194,6 +206,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                     if (queryContext.getColumnTransformers().get(querySetColumnIndex) != queryContext.getColumns().get(querySetColumnIndex)) {
                         // Now do the transformation for each row
                         for (int j = 0; j < rows.length; j++) {
+                            if (rows[j] == null) continue;
                             ApplyMasking.redact(rows[j][querySetColumnIndex + resultSetColumnIndexOffset]);
                         }
 
