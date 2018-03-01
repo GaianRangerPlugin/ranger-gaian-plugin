@@ -166,54 +166,52 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
             //return new DataValueDescriptor[rows.length][rows[0].length];
             return new DataValueDescriptor[0][0];
         } else {
-            try {
-                // When called using a select from a view, or a VTI, the rows array will only contain the columns we expect
-                // for example a select firstname,lastname from vemployee would only give us 2 columns in the rows array
-                // However when using table function we get ALL columns - and they are stripped upstream.
-                // ie NULL,NULL,Georgi,Facello,NULL,NULL ....
-                // Thus our index for overwriting a column value with it's transformation is wrong, leading to wrong
-                // results or exceptions.
-                // **HACK** for now, skip over columns with NULL data. PURELY for demo support pending a proper
-                // fix
-                authorizer.applyRowFilterAndColumnMasking(queryContext);
 
-                int resultSetColumnIndexOffset = 0;
-                int querySetColumnIndex = 0;
+            // When called using a select from a view, or a VTI, the rows array will only contain the columns we expect
+            // for example a select firstname,lastname from vemployee would only give us 2 columns in the rows array
+            // However when using table function we get ALL columns - and they are stripped upstream.
+            // ie NULL,NULL,Georgi,Facello,NULL,NULL ....
+            // Thus our index for overwriting a column value with it's transformation is wrong, leading to wrong
+            // results or exceptions.
+            // **HACK** for now, skip over columns with NULL data. PURELY for demo support pending a proper
+            // fix
+            authorizer.applyRowFilterAndColumnMasking(queryContext);
 
-                // If there's no rows, masking isn't needed
-                if (null != rows && rows.length > 0) {
-                    while (querySetColumnIndex < queryContext.getColumns().size()) {
-                        // We ONLY look at the first row - this will fail if the data is null
-                        // instead should be consulting metadata (work needed to resolve)
-                        // BIG HACK warning....
-                        if (rows[0][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
-                            resultSetColumnIndexOffset++; // increment the fudge factor
-                            continue; // resume with the next expected column
-                        }
+            int resultSetColumnIndexOffset = 0;
+            int querySetColumnIndex = 0;
 
-                        if (queryContext.getColumnTransformers().get(querySetColumnIndex) != queryContext.getColumns().get(querySetColumnIndex)) {
-                            // Now do the transformation for each row
-                            for (int j = 0; j < rows.length; j++) {
-                                rows[j][querySetColumnIndex + resultSetColumnIndexOffset].setValue(queryContext.getColumnTransformers().get(querySetColumnIndex));
-                            }
-                                 }
-                        querySetColumnIndex++;
-
+            // If there's no rows, masking isn't needed
+            if (null != rows && rows.length > 0) {
+                while (querySetColumnIndex < queryContext.getColumns().size()) {
+                    // We ONLY look at the first row - this will fail if the data is null
+                    // instead should be consulting metadata (work needed to resolve)
+                    // BIG HACK warning....
+                    if (rows[0][querySetColumnIndex + resultSetColumnIndexOffset].isNull()) {
+                        resultSetColumnIndexOffset++; // increment the fudge factor
+                        continue; // resume with the next expected column
                     }
 
+                    if (queryContext.getColumnTransformers().get(querySetColumnIndex) != queryContext.getColumns().get(querySetColumnIndex)) {
+                        // Now do the transformation for each row
+                        for (int j = 0; j < rows.length; j++) {
+                            ApplyMasking.redact(rows[j][querySetColumnIndex + resultSetColumnIndexOffset]);
+                        }
 
-                    // END of hack. Original code follows:
+                    }
+                    querySetColumnIndex++;
 
-                    //for (int i = 0; i < queryContext.getColumns().size(); i++) {
-                    //	if (queryContext.getColumnTransformers().get(i) != queryContext.getColumns().get(i)) {
-                    //		for (int j = 0; j < rows.length; j++) {
-                    //			rows[j][i].setValue(queryContext.getColumnTransformers().get(i));
-                    //		}
-                    //	}
                 }
-            } catch (StandardException e) {
-                e.printStackTrace();
+
             }
+                // END of hack. Original code follows:
+
+                //for (int i = 0; i < queryContext.getColumns().size(); i++) {
+                //	if (queryContext.getColumnTransformers().get(i) != queryContext.getColumns().get(i)) {
+                //		for (int j = 0; j < rows.length; j++) {
+                //			rows[j][i].setValue(queryContext.getColumnTransformers().get(i));
+                //		}
+                //	}
+
         }
         return rows; // allow query to continue (i.e. accept this logical table)
     }
