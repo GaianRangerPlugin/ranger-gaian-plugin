@@ -1,0 +1,157 @@
+{
+  "enumDefs": [
+  ],
+  "structDefs": [
+  ],
+  "classificationDefs": [],
+  "entityDefs": [
+    {
+      "name": "gaian_table",
+      "superTypes": [
+        "DataSet"
+      ],
+      "typeVersion": "1.0",
+      "attributeDefs": [
+        {
+          "name": "schema",
+          "typeName": "gaian_schema",
+          "cardinality": "SINGLE",
+          "isIndexable": false,
+          "isOptional": false,
+          "isUnique": false
+        },
+        {
+          "name": "createTime",
+          "typeName": "date",
+          "cardinality": "SINGLE",
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        },
+        {
+          "name": "lastAccessTime",
+          "typeName": "date",
+          "cardinality": "SINGLE",
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        },
+        {
+          "name": "comment",
+          "typeName": "string",
+          "cardinality": "SINGLE",
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        },
+
+        {
+          "name": "columns",
+          "typeName": "array<hive_column>",
+          "cardinality": "SINGLE",
+          "constraints": [
+            {
+              "type": "ownedRef"
+            }
+          ],
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        }
+              ]
+    },
+
+    {
+      "name": "gaian_schema",
+      "superTypes": [
+        "Asset"
+      ],
+      "typeVersion": "1.1",
+      "attributeDefs": [
+
+      ]
+    },
+    {
+      "name": "gaian_column",
+      "superTypes": [
+        "DataSet"
+      ],
+      "typeVersion": "1.0",
+      "attributeDefs": [
+        {
+          "name": "type",
+          "typeName": "string",
+          "cardinality": "SINGLE",
+          "isIndexable": true,
+          "isOptional": false,
+          "isUnique": false
+        },
+        {
+          "name": "comment",
+          "typeName": "string",
+          "cardinality": "SINGLE",
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        },
+        {
+          "name": "table",
+          "typeName": "gaian_table",
+          "cardinality": "SINGLE",
+          "constraints": [
+            {
+              "type": "inverseRef",
+              "params": {
+                "attribute": "columns"
+              }
+            }
+          ],
+          "isIndexable": false,
+          "isOptional": true,
+          "isUnique": false
+        }
+      ]
+    }
+  ],
+  "relationshipDefs": [
+    {
+      "name": "gaian_schema_tables",
+      "typeVersion": "1.0",
+      "relationshipCategory": "COMPOSITION",
+      "endDef1": {
+        "type": "gaian_schema",
+        "name": "tables",
+        "isContainer": true,
+        "cardinality": "SET"
+      },
+      "endDef2": {
+        "type": "gaian_table",
+        "name": "db",
+        "isContainer": false,
+        "cardinality": "SINGLE",
+        "isLegacyAttribute": true
+      },
+      "propagateTags": "NONE"
+    },
+    {
+      "name": "gaian_table_columns",
+      "typeVersion": "1.0",
+      "relationshipCategory": "COMPOSITION",
+      "endDef1": {
+        "type": "gaian_table",
+        "name": "columns",
+        "isContainer": true,
+        "cardinality": "SET",
+        "isLegacyAttribute": true
+      },
+      "endDef2": {
+        "type": "gaian_column",
+        "name": "table",
+        "isContainer": false,
+        "cardinality": "SINGLE",
+        "isLegacyAttribute": true
+      },
+      "propagateTags": "NONE"
+    }
+    ]
+}
