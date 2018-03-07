@@ -10,5 +10,6 @@ winpkg/target
 *.class
 /target/**
 /plugin/target/**
+/atlasexample/target/**
 /impersonation/target/**
-
+~$*

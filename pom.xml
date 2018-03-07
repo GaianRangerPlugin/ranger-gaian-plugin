@@ -30,6 +30,7 @@
     <modules>
         <module>plugin</module>
         <module>impersonation</module>
+        <module>atlasexample</module>
     </modules>
 
     <!-- Common properties for all modules -->
@@ -384,6 +385,9 @@
                 <artifactId>httpclient</artifactId>
                 <version>4.3.6</version>
             </dependency>
+
+
+
         </dependencies>
     </dependencyManagement>
 </project>
