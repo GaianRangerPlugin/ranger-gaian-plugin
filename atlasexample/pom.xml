@@ -44,10 +44,11 @@
     </repositories>
 
     <dependencies>
+        <!-- Note - currently using a special build to add relationship API -->
         <dependency>
             <groupId>org.apache.atlas</groupId>
             <artifactId>atlas-client-v2</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.0-ATLAS-2488-04</version>
         </dependency>
     </dependencies>
     <!-- end of atlas client dependency -->

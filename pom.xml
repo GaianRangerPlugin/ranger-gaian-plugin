@@ -43,7 +43,7 @@
     <!-- Additional repos (for example gaian, derby - see the repo directory -->
     <repositories>
         <repository>
-            <id>rgp-local</id>
+            <id>0.rgp-local</id>
             <name>Local project repo</name>
             <url>file://${project.basedir}/../repo</url>
         </repository>

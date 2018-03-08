@@ -4,15 +4,12 @@ package org.apache.atlas.gaian;
 
 import org.apache.atlas.AtlasClientV2;
 import org.apache.atlas.AtlasException;
-import org.apache.atlas.model.instance.AtlasEntityHeader;
+import org.apache.atlas.model.instance.*;
 import org.apache.atlas.model.typedef.AtlasEnumDef;
 import org.apache.atlas.model.typedef.AtlasStructDef;
 import org.apache.atlas.model.typedef.AtlasTypesDef;
 import org.apache.atlas.model.typedef.AtlasEntityDef;
 import org.apache.atlas.type.AtlasTypeUtil;
-import org.apache.atlas.model.instance.AtlasEntity;
-import org.apache.atlas.model.instance.EntityMutationResponse;
-import org.apache.atlas.model.instance.EntityMutations;
 import org.apache.atlas.utils.AuthenticationUtil;
 import org.apache.commons.collections.CollectionUtils;
 
@@ -66,10 +63,19 @@ import java.util.List;
         GaianSampleData sampledata;
 
         sampledata = new GaianSampleData(urls, basicAuthUsernamePassword);
-        sampledata.createTypes();
-        sampledata.createEntities();
+
+        try {
+            sampledata.createTypes();
+        } catch  (Exception e) { System.out.println("Failed to create types - probably exist"); }
+
+        try {
+            sampledata.createEntities();
+        } catch (Exception e) { System.out.println("Failed to create entities - probably exist"); }
 
 
+        try {
+            sampledata.createRelationships();
+        } catch (Exception e) { System.out.println("Failed to create entities - probably exist"); }
     }
 
 
@@ -92,6 +98,18 @@ import java.util.List;
         System.out.println("\nCreating gaian types: ");
         atlasClientV2.createAtlasTypeDefs(atlasTypesDef);
 
+
+    }
+
+    void createRelationships() throws Exception {
+        System.out.println("\nCreating gaian relationships: ");
+
+
+        // Now let's try creating some relationships.
+    // V1 = hardcoded!
+    //AtlasRelationship relationship = new AtlasRelationship;
+    //atlasClientV2.createRelationship()
+    // WIP ...
     }
 
     // The real work on creating the types
