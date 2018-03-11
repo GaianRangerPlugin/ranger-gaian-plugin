@@ -1,8 +1,10 @@
-create database CDD;
 
-connect to CompanyDirectoryDatabase;
+disconnect all$
+create database CDD$
 
-drop table if exists ContactList;
+connect to CDD$
+
+drop table ContactList$
 CREATE TABLE ContactList (
   RecId INT NOT NULL,
   ContactType CHAR NOT NULL,
@@ -11,6 +13,7 @@ CREATE TABLE ContactList (
   Company VARCHAR(50) NOT NULL,
   JobTitle VARCHAR(80) NOT NULL,
   WorkLocation INT NOT NULL
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/CompanyDirectoryDatabase-ContactList.csv' into table ContactList columns terminated by ';' ignore 1 lines;
+import from '../CompanyDirectoryDatabase-ContactList.csv' of DEL modified by coldel; skipcount 1 insert into ContactList $
+terminate$

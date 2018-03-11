@@ -1,0 +1,280 @@
+Executing CompanyDirectoryDatabase-ContactEmail.sql
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+SQL1005N  The database alias "CDD" already exists in either the local database 
+directory or system database directory.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = CDD
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../CompanyDirectoryDatabase-ContactEmail.csv".
+
+SQL3110N  The utility has completed processing.  "35" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "35".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "35" rows were processed from the input file.  "34" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 35
+Number of rows skipped      = 1
+Number of rows inserted     = 34
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 35
+
+
+Executing CompanyDirectoryDatabase-ContactList.sql
+SQL1047N  The application is already connected to another database.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = CDD
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../CompanyDirectoryDatabase-ContactList.csv".
+
+SQL3110N  The utility has completed processing.  "27" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "27".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "27" rows were processed from the input file.  "26" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 27
+Number of rows skipped      = 1
+Number of rows inserted     = 26
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 27
+
+
+Executing CompanyDirectoryDatabase-ContactPhone.sql
+SQL1047N  The application is already connected to another database.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = CDD
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../CompanyDirectoryDatabase-ContactPhone.csv".
+
+SQL3110N  The utility has completed processing.  "29" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "29".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "29" rows were processed from the input file.  "28" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 29
+Number of rows skipped      = 1
+Number of rows inserted     = 28
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 29
+
+
+Executing EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.sql
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+SQL1005N  The database alias "ESAD" already exists in either the local 
+database directory or system database directory.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = ESAD
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv".
+
+SQL3110N  The utility has completed processing.  "20" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "20".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "20" rows were processed from the input file.  "19" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 20
+Number of rows skipped      = 1
+Number of rows inserted     = 19
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 20
+
+
+DB20000I  The TERMINATE command completed successfully.
+
+Executing EmployeeDatabase-Dept.sql
+SQL1005N  The database alias "ED" already exists in either the local database 
+directory or system database directory.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = ED
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../EmployeeDatabase-Dept.csv".
+
+SQL3110N  The utility has completed processing.  "10" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "10".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "10" rows were processed from the input file.  "9" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 10
+Number of rows skipped      = 1
+Number of rows inserted     = 9
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 10
+
+
+Executing EmployeeDatabase-Employee.sql
+SQL1047N  The application is already connected to another database.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = ED
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL0104N  An unexpected token "data" was found following "LOAD".  Expected 
+tokens may include:  "QUERY".  SQLSTATE=42601
+
+Executing LocationDatabase-WorkLocation.sql
+SQL1047N  The application is already connected to another database.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+SQL1013N  The database alias name or database name "LD" could not be found.  
+SQLSTATE=42705
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
+DB21034E  The command was processed as an SQL statement because it was not a 
+valid Command Line Processor command.  During SQL processing it returned:
+SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
+SQL1024N  A database connection does not exist.  SQLSTATE=08003
+
+Executing PatientDatabase-PatientTable.sql
+SQL1005N  The database alias "PD" already exists in either the local database 
+directory or system database directory.
+
+DB20000I  The SQL DISCONNECT command completed successfully.
+
+
+   Database Connection Information
+
+ Database server        = DB2/LINUXX8664 11.1.2.2
+ SQL authorization ID   = DB2INST1
+ Local database alias   = PD
+
+
+DB20000I  The SQL command completed successfully.
+
+DB20000I  The SQL command completed successfully.
+
+SQL3109N  The utility is beginning to load data from file 
+"../PatientDatabase-PatientTable.csv".
+
+SQL3110N  The utility has completed processing.  "33" rows were read from the 
+input file.
+
+SQL3221W  ...Begin COMMIT WORK. Input Record Count = "33".
+
+SQL3222W  ...COMMIT of any database changes was successful.
+
+SQL3149N  "33" rows were processed from the input file.  "32" rows were 
+successfully inserted into the table.  "0" rows were rejected.
+
+
+Number of rows read         = 33
+Number of rows skipped      = 1
+Number of rows inserted     = 32
+Number of rows updated      = 0
+Number of rows rejected     = 0
+Number of rows committed    = 33
+
+

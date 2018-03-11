@@ -1,12 +1,11 @@
 #!/bin/sh
+echo 'Deleting old DBs'
+echo '---'
+db2 -td$ -f dropdb.sql1
 for file in *sql
 do
   echo "Executing $file"
-  mysql -u root < $file
-  rc=$?
-  if [[ $rc -ne 0 ]]
-  then
-    echo "Failed...."
-    exit 1
-  fi
+  echo '---'
+  db2 -td$ -f $file
+  echo '---'
 done

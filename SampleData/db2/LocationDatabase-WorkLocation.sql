@@ -1,8 +1,8 @@
-create database LD  ;
+disconnect all$
+create database LD$
+connect to LD$
 
-connect to LocationDatabase;
-
-drop table if exists WorkLocation;
+drop table WorkLocation$
 
 CREATE TABLE WorkLocation (
   WLID INT NOT NULL,
@@ -16,6 +16,8 @@ CREATE TABLE WorkLocation (
   ADDR7 VARCHAR(40)
 
 
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/LocationDatabase-WorkLocation.csv' into table WorkLocation columns terminated by ';' ignore 1 lines;
+
+import from '../LocationDatabase-WorkLocation.csv' of DEL modified by coldel; skipcount 1 insert into WorkLocation $
+terminate$

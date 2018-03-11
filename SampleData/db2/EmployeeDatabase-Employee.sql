@@ -1,8 +1,9 @@
-create database ED;
 
-connect to EmployeeDatabase;
+disconnect all$
+create database ED$
+connect to ED$
 
-drop table if exists Employee;
+drop table Employee$
 CREATE TABLE Employee (
   PNUM INT NOT NULL,
   FNAME VARCHAR(40) NOT NULL,
@@ -12,6 +13,8 @@ CREATE TABLE Employee (
   DEPT INT NOT NULL,
   ROLE VARCHAR(40) NOT NULL,
   LOCCODE INT NOT NULL
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/EmployeeDatabase-Employee.csv' into table Employee columns terminated by ';' ignore 1 lines;
+
+import from '../EmployeeDatabase-Employee.csv' of DEL modified by coldel; skipcount 1 insert into Employee $
+terminate$

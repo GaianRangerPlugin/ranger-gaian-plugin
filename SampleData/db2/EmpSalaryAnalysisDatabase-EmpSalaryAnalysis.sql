@@ -1,8 +1,10 @@
-create database ESAD  ;
+disconnect all$
+create database ESAD$
 
-connect to EmpSalaryAnalysisDatabase;
 
-drop table if exists EmpSalaryAnalysis;
+connect to ESAD$
+
+drop table EmpSalaryAnalysis$
 CREATE TABLE EmpSalaryAnalysis (
   HDR INT NOT NULL,
   RECTYPE INT NOT NULL,
@@ -28,6 +30,8 @@ CREATE TABLE EmpSalaryAnalysis (
   TAXP INT NOT NULL
 
 
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv' into table EmpSalaryAnalysis columns terminated by ';' ignore 1 lines;
+import from '../EmpSalaryAnalysisDatabase-EmpSalaryAnalysis.csv' of DEL modified by coldel; skipcount 1 insert into EmpSalaryAnalysis $
+
+terminate$

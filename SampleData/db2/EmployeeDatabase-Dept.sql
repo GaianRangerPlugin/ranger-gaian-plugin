@@ -1,12 +1,13 @@
-create database ED  ;
+disconnect all$
+create database ED$
+connect to ED$
 
-connect to EmployeeDatabase  ;
-
-drop table if exists Dept;
+drop table Dept$
 CREATE TABLE Dept (
   DEPCODE INT NOT NULL,
   DEPNAME VARCHAR(40) NOT NULL,
   MANAGER INT
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/EmployeeDatabase-Dept.csv' into table Dept columns terminated by ';' ignore 1 lines ( DEPCODE,DEPNAME,@VMANAGER ) SET MANAGER = nullif(@VMANAGER,0) ;
+import from '../EmployeeDatabase-Dept.csv' of DEL modified by coldel; skipcount 1 insert into Dept $
+terminate$

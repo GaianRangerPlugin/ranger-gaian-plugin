@@ -1,8 +1,8 @@
-create database PD  ;
+disconnect all$
+create database PD$
+connect to PD$
 
-connect to PatientDatabase;
-
-drop table if exists PatientTable;
+drop table PatientTable$
 CREATE TABLE PatientTable (
   PatientId INT NOT NULL,
   Patient VARCHAR(40) NOT NULL,
@@ -13,6 +13,7 @@ CREATE TABLE PatientTable (
   LH_Addr_5 VARCHAR(40),
   Trial VARCHAR(10) NOT NULL
 
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/PatientDatabase-PatientTable.csv' into table PatientTable columns terminated by ';' ignore 1 lines;
+import from '../PatientDatabase-PatientTable.csv' of DEL modified by coldel; skipcount 1 insert into PatientTable $
+terminate$

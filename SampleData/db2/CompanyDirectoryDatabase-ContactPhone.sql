@@ -1,12 +1,17 @@
-create database CDD  ;
 
-connect to CompanyDirectoryDatabase;
+disconnect all$
+create database CDD$
 
-drop table if exists ContactPhone;
+connect to CDD$
+
+
+drop table ContactPhone$
 CREATE TABLE ContactPhone (
   RecId INT NOT NULL,
   ContactType CHAR NOT NULL,
   Number VARCHAR(40) NOT NULL
-) ;
+) $
 
-load data infile '/Users/jonesn/VDCData/CompanyDirectoryDatabase-ContactPhone.csv' into table ContactPhone columns terminated by ';' ignore 1 lines;
+import from '../CompanyDirectoryDatabase-ContactPhone.csv' of DEL modified by coldel; skipcount 1 insert into ContactPhone$
+terminate$
+
