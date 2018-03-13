@@ -179,7 +179,7 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
 
             int resultSetColumnIndexOffset = 0;
             int querySetColumnIndex = 0;
-            int firstValidRow = 0;
+            int firstValidRow = -1;
 
             // If there's no rows, masking isn't needed
             if (null != rows && rows.length > 0) {
@@ -192,9 +192,10 @@ public class RangerPolicyResultFilter extends SQLResultFilterX {
                 }
 
                 // if all the rows are null return directly
-                if (firstValidRow == rows.length) return rows;
+                if (firstValidRow == -1) return rows;
 
-                while (querySetColumnIndex < queryContext.getColumns().size()) {
+                while (querySetColumnIndex < queryContext.getColumns().size()
+                        && querySetColumnIndex + resultSetColumnIndexOffset < rows[firstValidRow].length) {
                     // We ONLY look at the first row - this will fail if the data is null
                     // instead should be consulting metadata (work needed to resolve)
                     // BIG HACK warning....
