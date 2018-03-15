@@ -1,7 +1,6 @@
 package org.apache.atlas.gaian;
 
 
-
 import org.apache.atlas.AtlasClientV2;
 import org.apache.atlas.AtlasException;
 import org.apache.atlas.model.instance.*;
@@ -40,15 +39,14 @@ import java.util.List;
 /**
  * Create sample Gaian entities & types
  */
-    public class GaianSampleData {
+public class GaianSampleData {
 
     // Launcher - this class will normally be run at cmd line
     public static void main(String[] args) throws Exception {
         String[] basicAuthUsernamePassword = null;
 
 
-        if (args.length <1)
-        {
+        if (args.length < 1) {
             System.out.println("\nNo atlas server specified: ");
             System.exit(1);
         }
@@ -66,16 +64,16 @@ import java.util.List;
 
         try {
             sampledata.createTypes();
-        } catch  (Exception e) { System.out.println("Failed to create types - probably exist"); }
+        } catch (Exception e) {
+            System.out.println("Failed to create types - probably exist");
+        }
 
         try {
             sampledata.createEntities();
-        } catch (Exception e) { System.out.println("Failed to create entities - probably exist"); }
+        } catch (Exception e) {
+            System.out.println("Failed to create entities - probably exist");
+        }
 
-
-        try {
-            sampledata.createRelationships();
-        } catch (Exception e) { System.out.println("Failed to create entities - probably exist"); }
     }
 
 
@@ -83,7 +81,7 @@ import java.util.List;
     private final AtlasClientV2 atlasClientV2;
 
     GaianSampleData(String[] urls, String[] basicAuthUsernamePassword) {
-        atlasClientV2 = new AtlasClientV2(urls,basicAuthUsernamePassword);
+        atlasClientV2 = new AtlasClientV2(urls, basicAuthUsernamePassword);
     }
 
     GaianSampleData(String[] urls) throws AtlasException {
@@ -101,15 +99,20 @@ import java.util.List;
 
     }
 
-    void createRelationships() throws Exception {
+    AtlasRelationship createRelationship(String end1, String end2, String name) throws Exception {
         System.out.println("\nCreating gaian relationships: ");
 
 
         // Now let's try creating some relationships.
-    // V1 = hardcoded!
-    //AtlasRelationship relationship = new AtlasRelationship;
-    //atlasClientV2.createRelationship()
-    // WIP ...
+
+        AtlasRelationship relationship = new AtlasRelationship();
+        relationship.setEnd1(new AtlasObjectId(end1));
+        relationship.setEnd2(new AtlasObjectId(end2));
+        relationship.setLabel(name);
+
+        return (atlasClientV2.createRelationship(relationship));
+
+
     }
 
     // The real work on creating the types
@@ -120,24 +123,24 @@ import java.util.List;
     AtlasTypesDef createTypeDefinitions() throws Exception {
 
         // Gaian Schema
-        AtlasEntityDef schemaType   = AtlasTypeUtil.createClassTypeDef("gaianSchema", "Gaian Schema", "1.0", null);
-                AtlasTypeUtil.createUniqueRequiredAttrDef("name", "string");
-                AtlasTypeUtil.createUniqueRequiredAttrDef("qualifiedName", "string");
-                AtlasTypeUtil.createOptionalAttrDef("comment", "string");
+        AtlasEntityDef schemaType = AtlasTypeUtil.createClassTypeDef("gaianSchema", "Gaian Schema", "1.0", null);
+        AtlasTypeUtil.createUniqueRequiredAttrDef("name", "string");
+        AtlasTypeUtil.createUniqueRequiredAttrDef("qualifiedName", "string");
+        AtlasTypeUtil.createOptionalAttrDef("comment", "string");
 
         // Gaian Column
-        AtlasEntityDef colType  = AtlasTypeUtil.createClassTypeDef("gaianColumn", "Gaian Column", "1.0", null);
-                AtlasTypeUtil.createOptionalAttrDef("name", "string");
-                AtlasTypeUtil.createOptionalAttrDef("type", "string");
-                // Column position probably needs to be managed as part of the database
-                //AtlasTypeUtil.createOptionalAttrDef("position", "string");
-                AtlasTypeUtil.createOptionalAttrDef("comment", "string");
+        AtlasEntityDef colType = AtlasTypeUtil.createClassTypeDef("gaianColumn", "Gaian Column", "1.0", null);
+        AtlasTypeUtil.createOptionalAttrDef("name", "string");
+        AtlasTypeUtil.createOptionalAttrDef("type", "string");
+        // Column position probably needs to be managed as part of the database
+        //AtlasTypeUtil.createOptionalAttrDef("position", "string");
+        AtlasTypeUtil.createOptionalAttrDef("comment", "string");
 
         // Gaian Table
-        AtlasEntityDef tblType  = AtlasTypeUtil.createClassTypeDef("gaianTable", "Gaian Table", "1.0", Collections.singleton("DataSet"));
-                AtlasTypeUtil.createUniqueRequiredAttrDef("name", "string");
-                AtlasTypeUtil.createUniqueRequiredAttrDef("qualifiedName", "string");
-                AtlasTypeUtil.createOptionalAttrDef("comment", "string");
+        AtlasEntityDef tblType = AtlasTypeUtil.createClassTypeDef("gaianTable", "Gaian Table", "1.0", Collections.singleton("DataSet"));
+        AtlasTypeUtil.createUniqueRequiredAttrDef("name", "string");
+        AtlasTypeUtil.createUniqueRequiredAttrDef("qualifiedName", "string");
+        AtlasTypeUtil.createOptionalAttrDef("comment", "string");
 
         return AtlasTypeUtil.getTypesDef(Collections.<AtlasEnumDef>emptyList(),
                 Collections.<AtlasStructDef>emptyList(),
@@ -149,15 +152,20 @@ import java.util.List;
         System.out.println("\nCreating sample entities: ");
 
         // Database entities
-        createSchema("GAIAN", "GAIAN", "Gaian Database Schema");
+        AtlasEntity gs = createSchema("GAIAN", "GAIAN", "Gaian Database Schema");
 
         // Table
-        createTable("VEMPLOYEE", "GAIAN.VEMPLOYEE","Employee Table");
-
+        AtlasEntity gt = createTable("VEMPLOYEE", "GAIAN.VEMPLOYEE", "Employee Table");
+        AtlasRelationship r0 = createRelationship(gs.getGuid(),gt.getGuid(),"link");
         // Column entities
-        createColumn("FISTNAME", "String", "GAIAN.VEMPLOYEE.FIRSTNAME","First Name");
-        createColumn("LASTNAME", "String", "GAIAN.VEMPLOYEE.LASTNAME","Last Name");
-        createColumn("BIRTH_DATE", "String", "GAIAN.VEMPLOYEE.BIRTH_DATE","Birth Date");
+        AtlasEntity gc1 = createColumn("FIRSTNAME", "String", "GAIAN.VEMPLOYEE.FIRSTNAME", "First Name");
+        AtlasRelationship r1 = createRelationship(gt.getGuid(),gc1.getGuid(),"link");
+
+        AtlasEntity gc2 = createColumn("LASTNAME", "String", "GAIAN.VEMPLOYEE.LASTNAME", "Last Name");
+        AtlasRelationship r2 = createRelationship(gt.getGuid(),gc2.getGuid(),"link");
+
+        AtlasEntity gc3 = createColumn("BIRTH_DATE", "String", "GAIAN.VEMPLOYEE.BIRTH_DATE", "Birth Date");
+        AtlasRelationship r3 = createRelationship(gt.getGuid(),gc3.getGuid(),"link");
 
         // Note - no relationships created at this point
     }
@@ -165,7 +173,7 @@ import java.util.List;
     // Actually create the instance at the backend (code from QuickStartV2)
     private AtlasEntity createInstance(AtlasEntity entity, String[] traitNames) throws Exception {
         AtlasEntity ret = null;
-        EntityMutationResponse  response = atlasClientV2.createEntity(new AtlasEntity.AtlasEntityWithExtInfo(entity));
+        EntityMutationResponse response = atlasClientV2.createEntity(new AtlasEntity.AtlasEntityWithExtInfo(entity));
         List<AtlasEntityHeader> entities = response.getEntitiesByOperation(EntityMutations.EntityOperation.CREATE);
 
         if (CollectionUtils.isNotEmpty(entities)) {
@@ -177,7 +185,7 @@ import java.util.List;
         return ret;
     }
 
-    AtlasEntity createSchema(String name, String qualifiedName,String comment)
+    AtlasEntity createSchema(String name, String qualifiedName, String comment)
             throws Exception {
         AtlasEntity entity = new AtlasEntity("gaianSchema");
 
@@ -187,12 +195,12 @@ import java.util.List;
         entity.setAttribute("comment", comment);
 
         // No trait support for now
-        return createInstance(entity,null);
+        return createInstance(entity, null);
     }
 
 
     // create a Gaian Column
-    AtlasEntity createColumn(String name, String dataType, String qualifiedName,String comment) throws Exception {
+    AtlasEntity createColumn(String name, String dataType, String qualifiedName, String comment) throws Exception {
 
         AtlasEntity entity = new AtlasEntity("gaianColumn");
         entity.setAttribute("name", name);
@@ -216,7 +224,6 @@ import java.util.List;
         return createInstance(entity, null);
 
     }
-
 
 
 }

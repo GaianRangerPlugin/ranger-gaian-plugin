@@ -48,8 +48,21 @@
         <dependency>
             <groupId>org.apache.atlas</groupId>
             <artifactId>atlas-client-v2</artifactId>
-            <version>1.0.0-ATLAS-2488-04</version>
+            <version>1.0.0-ATLAS-2488-07</version>
         </dependency>
+
+        <!-- Override global version as atlas client has switched to later version of
+         jackson... otherwise a AbstractMethodError exception will occur -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.9.4</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.codehaus.jackson/jackson-jaxrs -->
+
+
     </dependencies>
     <!-- end of atlas client dependency -->
 
