@@ -85,6 +85,14 @@ Replace localhost with the IP /port of your Ranger Server
 
 Once posted, the ranger access manager page should now show 'Gaian' as a selectable component
 
+In some cases (in particular when deploying to a standalone clean ranger, as opposed to HDP) you may 
+need to copy the plugin to the ranger server too. When complete this would be done to support the
+resource name typeahead feature
+
+Make the directory & copy the plugin jar to /opt/ranger-1.0.0-SNAPSHOT-admin/ews/webapp/WEB-INF/classes/ranger-plugins/gaian
+
+Adjust the path as appropriate based on the install location
+
 **Updating an existing service definition**
 
 First delete any existing gaian services through the ranger UI
@@ -275,4 +283,9 @@ If you see
     `java.io.FileNotFoundException: /root/gaiandb/gaiandb/policycache/gaian_gaian.json (No such file or directory)`
 
 check the specification of PolicyCache in the plugin configuration file & ensure the directory
-exists and is writeable    
+exists and is writeable   
+
+_Cannot create gaian service on ranger server_
+
+If you get an error 'cannot find class XXX' copy the ranger gaian plugin to the ranger server as 
+documented above in the section on deploying the servicedef. 
