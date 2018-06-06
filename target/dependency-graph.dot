@@ -1,0 +1,21 @@
+digraph "ranger-gaian-security" {
+  node [shape="box",style="rounded",fontname="Helvetica",fontsize="14"]
+  edge [fontsize="10",fontname="Helvetica"]
+
+  // Node Definitions:
+  "org.spockframework:spock-core:jar"[label=<spock-core>]
+  "junit:junit:jar"[label=<junit>]
+  "org.gaian:ranger-gaian-security:pom"[label=<ranger-gaian-security>]
+  "org.codehaus.groovy:groovy-all:jar"[label=<groovy-all>]
+  "net.bytebuddy:byte-buddy:jar"[label=<byte-buddy<font point-size="10"><br/>(test)</font>>]
+  "org.objenesis:objenesis:jar"[label=<objenesis<font point-size="10"><br/>(test)</font>>]
+  "org.hamcrest:hamcrest-core:jar"[label=<hamcrest-core<font point-size="10"><br/>(test)</font>>]
+
+  // Edge Definitions:
+  "org.spockframework:spock-core:jar" -> "junit:junit:jar"
+  "org.gaian:ranger-gaian-security:pom" -> "org.spockframework:spock-core:jar"
+  "org.gaian:ranger-gaian-security:pom" -> "org.codehaus.groovy:groovy-all:jar"
+  "org.gaian:ranger-gaian-security:pom" -> "net.bytebuddy:byte-buddy:jar"
+  "org.gaian:ranger-gaian-security:pom" -> "org.objenesis:objenesis:jar"
+  "org.gaian:ranger-gaian-security:pom" -> "org.hamcrest:hamcrest-core:jar"
+}
