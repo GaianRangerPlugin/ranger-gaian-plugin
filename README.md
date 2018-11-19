@@ -1,5 +1,12 @@
 # ranger-gaian-plugin
 
+## THIS PROJECT IS NOW DEPRECATED. 
+### Please go to http://github.com/odpi/egeria to read about Egeria, where you will also find governance engine plugins for Apache Ranger and Impersonation support. You can also join the community and contribute there
+
+### If you are interested in directly contributing this capability to Apache Ranger please feel free - and ideally get in touch so we can work on merging in the code from Egeria :-)
+
+### Nigel Jones
+
 **Introduction**
 
 This plugin provides support for Ranger policies to be implemented when access data through Gaian.
